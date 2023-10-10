@@ -1,5 +1,5 @@
 /** Tracks active intervals and updates timeout IDs so they can be cancelled. */
-export const intervals: { [key: number]: NodeJS.Timeout } = {};
+const intervals: { [key: number]: NodeJS.Timeout } = {};
 
 /** Tracks the next interval ID for this session. */
 let nextIntervalID: number = 0;
