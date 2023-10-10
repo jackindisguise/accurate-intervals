@@ -1,5 +1,5 @@
 /** Tracks active intervals and updates timeout IDs so they can be cancelled. */
-const intervals = {};
+export const intervals = {};
 /** Tracks the next interval ID for this session. */
 let nextIntervalID = 0;
 /**
@@ -10,9 +10,12 @@ let nextIntervalID = 0;
  */
 export function setAbsoluteInterval(callback, interval) {
     const intervalID = nextIntervalID++;
+    const startTime = Math.floor(Date.now() / interval) * interval;
+    let cycle = 1; // number of cycles we've been through
     const __next = () => {
         const now = Date.now();
-        const remainder = interval - (now % interval);
+        const target = startTime + interval * cycle++; // calculate the target from the start point
+        const remainder = target - now;
         intervals[intervalID] = setTimeout(() => {
             __next();
             callback(remainder);
@@ -49,8 +52,10 @@ export function setRelativeInterval(callback, interval) {
  */
 export function clearCustomInterval(...ids) {
     for (const id of ids) {
+        if (!(id in intervals))
+            continue;
         const timeoutID = intervals[id];
-        if (timeoutID)
-            clearTimeout(timeoutID);
+        delete intervals[id];
+        clearTimeout(timeoutID);
     }
 }

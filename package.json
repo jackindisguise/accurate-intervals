@@ -2,7 +2,17 @@
   "name": "relativeabsolute",
   "version": "1.0.0",
   "description": "Provides more accurate interval functionality.",
-  "main": "index.js",
+  "typings": "es6/build/index.d.ts",
+  "exports": {
+    ".": [
+      {
+        "import": "./es6/build/index.mjs",
+        "require": "./cjs/build/index.cjs",
+        "default": "./cjs/build/index.cjs"
+      },
+      "./cjs/build/index.cjs"
+    ]
+  },
   "scripts": {
     "clean": "node clean.cjs",
     "make": "npm run clean && npm run prettier && npm run lint && npm run compile && npm run fix && npm test",
@@ -27,6 +37,6 @@
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   },
-  "author": "",
+  "author": "jackindisguise",
   "license": "ISC"
 }
