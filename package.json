@@ -1,5 +1,5 @@
 {
-  "name": "relativeabsolute",
+  "name": "accurate-intervals",
   "version": "1.0.0",
   "description": "Provides more accurate interval functionality.",
   "typings": "es6/build/index.d.ts",
@@ -38,5 +38,19 @@
     "typescript": "^5.2.2"
   },
   "author": "jackindisguise",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jackindisguise/accurate-intervals.git"
+  },
+  "keywords": [
+    "interval",
+    "timeout",
+    "timer",
+    "timing"
+  ],
+  "bugs": {
+    "url": "https://github.com/jackindisguise/accurate-intervals/issues"
+  },
+  "homepage": "https://github.com/jackindisguise/accurate-intervals#readme"
 }
