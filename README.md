@@ -35,7 +35,7 @@ setRelativeInterval((delay)=>{
 }, 1000)
 ```
 
-Due to inherent unpredictability in the way intervals and timeouts work, `delay` will vary, but it will always be between `0ms` and `1000`ms. In my experience, you can expect it to vary by `0ms`~`25ms` on average regardless of the actual interval assigned, with some spikes of `100ms`~ or more uncommonly.
+Due to inherent unpredictability in the way intervals and timeouts work, `delay` will vary, but it will always be between `0ms` and `1000`ms. In my experience, you can expect it to vary by `0ms`\~`25ms` on average regardless of the actual interval assigned, with some spikes of `100ms`\~ or more uncommonly.
 
 Setting an interval below `30ms` is inadvisable in pretty much all circumstances for this reason, as you may create a runaway condition where your interval will have to endlessly try to catch up.
 ### Canceling intervals.
