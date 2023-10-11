@@ -1,6 +1,6 @@
 {
   "name": "accurate-intervals",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Provides more accurate interval functionality.",
   "typings": "es6/build/index.d.ts",
   "exports": {
