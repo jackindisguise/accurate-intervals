@@ -6,24 +6,25 @@ let nextIntervalID: number = 0;
 
 /**
  * Sets an interval that fires at the given interval without respect to when it was fired.
- * @param callback A callback that is fired on the interval.
- * @param interval The interval to fire the callback at.
+ * @param callback {function} A callback that is fired on the interval.
+ * @param interval {number} The interval to fire the callback at.
  * @returns {number} An ID that tracks this interval.
  */
 export function setAbsoluteInterval(
-	callback: (delay: number) => void,
+	callback: () => void,
 	interval: number
 ): number {
 	const intervalID = nextIntervalID++;
 	const startTime = Math.floor(Date.now() / interval) * interval;
-	let cycle = 1; // number of cycles we've been through
+	let cycle = 0; // number of cycles we've been through
 	const __next = () => {
-		const now = Date.now();
-		const target = startTime + interval * cycle++; // calculate the target from the start point
-		const remainder = target - now;
+		let target: number;
+		do target = startTime + interval * ++cycle;
+		while (target < Date.now());
+		const remainder = target - Date.now();
 		intervals[intervalID] = setTimeout(() => {
 			__next();
-			callback(remainder);
+			callback();
 		}, remainder);
 	};
 
@@ -33,24 +34,26 @@ export function setAbsoluteInterval(
 
 /**
  * Sets an interval that fires at the given interval with respect to when it was fired.
- * @param callback A callback that is fired on the interval.
- * @param interval The interval to fire the callback at.
+ * @param callback {function} A callback that is fired on the interval.
+ * @param interval {number} The interval to fire the callback at.
  * @returns {number} An ID that tracks this interval.
  */
 export function setRelativeInterval(
-	callback: (delay: number) => void,
+	callback: () => void,
 	interval: number
 ): number {
 	const intervalID = nextIntervalID++;
 	const startTime = Date.now();
-	let cycle = 1; // number of cycles we've been through
+	let cycle = 0; // number of cycles we've been through
 	const __next = () => {
+		let target: number;
+		do target = startTime + interval * cycle++;
+		while (target < Date.now());
 		const now = Date.now();
-		const target = startTime + interval * cycle++; // calculate the target from the start point
 		const remainder = target - now;
 		intervals[intervalID] = setTimeout(() => {
 			__next();
-			callback(remainder);
+			callback();
 		}, remainder);
 	};
 
@@ -60,7 +63,7 @@ export function setRelativeInterval(
 
 /**
  * Clears accurate or relative intervals.
- * @param ...ids A set of accurate or relative intervals to cancel.
+ * @param ...ids {number[]} A set of accurate or relative intervals to cancel.
  */
 export function clearCustomInterval(...ids: number[]): void {
 	for (const id of ids) {

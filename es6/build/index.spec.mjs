@@ -3,10 +3,10 @@ import * as time from "./index.mjs";
 describe("setAbsoluteInterval", () => {
     const timeout = 10000;
     it("predictable execution time", (done) => {
-        let cycle = 0;
         const ms = 100;
         const start = Date.now();
         let diff = 0;
+        let cycle = 0;
         const intervalID = time.setAbsoluteInterval(() => {
             cycle++;
             const now = Date.now();
@@ -23,10 +23,10 @@ describe("setAbsoluteInterval", () => {
 describe("setRelativeInterval", () => {
     const timeout = 10000;
     it("predictable execution time", (done) => {
-        let cycle = 0;
         const ms = 100;
         const start = Date.now();
         let diff = 0;
+        let cycle = 0;
         const intervalID = time.setRelativeInterval(() => {
             cycle++;
             const now = Date.now();
