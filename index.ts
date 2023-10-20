@@ -4,14 +4,18 @@ const intervals: { [key: number]: NodeJS.Timeout } = {};
 /** Tracks the next interval ID for this session. */
 let nextIntervalID: number = 0;
 
+/** Callback supplied to custom intervals. */
+export type CustomIntervalCallback = (delay: number) => void;
+
 /**
- * Sets an interval that fires at the given interval without respect to when it was fired.
- * @param callback {function} A callback that is fired on the interval.
- * @param interval {number} The interval to fire the callback at.
- * @returns {number} An ID that tracks this interval.
+ * Sets an interval that fires at the given interval without respect to when it was fired.<br/>
+ * More accurately, it fires with respect to timestamp 0.
+ * @param callback A callback that is fired on the interval.
+ * @param interval The interval to fire the callback at.
+ * @returns An ID that tracks this interval.
  */
 export function setAbsoluteInterval(
-	callback: () => void,
+	callback: CustomIntervalCallback,
 	interval: number
 ): number {
 	const intervalID = nextIntervalID++;
@@ -24,7 +28,7 @@ export function setAbsoluteInterval(
 		const remainder = target - Date.now();
 		intervals[intervalID] = setTimeout(() => {
 			__next();
-			callback();
+			callback(remainder);
 		}, remainder);
 	};
 
@@ -34,12 +38,12 @@ export function setAbsoluteInterval(
 
 /**
  * Sets an interval that fires at the given interval with respect to when it was fired.
- * @param callback {function} A callback that is fired on the interval.
- * @param interval {number} The interval to fire the callback at.
- * @returns {number} An ID that tracks this interval.
+ * @param callback A callback that is fired on the interval.
+ * @param interval The interval to fire the callback at.
+ * @returns An ID that tracks this interval.
  */
 export function setRelativeInterval(
-	callback: () => void,
+	callback: CustomIntervalCallback,
 	interval: number
 ): number {
 	const intervalID = nextIntervalID++;
@@ -53,7 +57,7 @@ export function setRelativeInterval(
 		const remainder = target - now;
 		intervals[intervalID] = setTimeout(() => {
 			__next();
-			callback();
+			callback(remainder);
 		}, remainder);
 	};
 
@@ -62,8 +66,8 @@ export function setRelativeInterval(
 }
 
 /**
- * Clears accurate or relative intervals.
- * @param ...ids {number[]} A set of accurate or relative intervals to cancel.
+ * Clears a set of relative or absolute intervals.
+ * @param ids A set of accurate or relative intervals to cancel.
  */
 export function clearCustomInterval(...ids: number[]): void {
 	for (const id of ids) {

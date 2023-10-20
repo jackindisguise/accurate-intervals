@@ -3,10 +3,11 @@ const intervals = {};
 /** Tracks the next interval ID for this session. */
 let nextIntervalID = 0;
 /**
- * Sets an interval that fires at the given interval without respect to when it was fired.
- * @param callback {function} A callback that is fired on the interval.
- * @param interval {number} The interval to fire the callback at.
- * @returns {number} An ID that tracks this interval.
+ * Sets an interval that fires at the given interval without respect to when it was fired.<br/>
+ * More accurately, it fires with respect to timestamp 0.
+ * @param callback A callback that is fired on the interval.
+ * @param interval The interval to fire the callback at.
+ * @returns An ID that tracks this interval.
  */
 export function setAbsoluteInterval(callback, interval) {
     const intervalID = nextIntervalID++;
@@ -20,7 +21,7 @@ export function setAbsoluteInterval(callback, interval) {
         const remainder = target - Date.now();
         intervals[intervalID] = setTimeout(() => {
             __next();
-            callback();
+            callback(remainder);
         }, remainder);
     };
     __next();
@@ -28,9 +29,9 @@ export function setAbsoluteInterval(callback, interval) {
 }
 /**
  * Sets an interval that fires at the given interval with respect to when it was fired.
- * @param callback {function} A callback that is fired on the interval.
- * @param interval {number} The interval to fire the callback at.
- * @returns {number} An ID that tracks this interval.
+ * @param callback A callback that is fired on the interval.
+ * @param interval The interval to fire the callback at.
+ * @returns An ID that tracks this interval.
  */
 export function setRelativeInterval(callback, interval) {
     const intervalID = nextIntervalID++;
@@ -45,15 +46,15 @@ export function setRelativeInterval(callback, interval) {
         const remainder = target - now;
         intervals[intervalID] = setTimeout(() => {
             __next();
-            callback();
+            callback(remainder);
         }, remainder);
     };
     __next();
     return intervalID;
 }
 /**
- * Clears accurate or relative intervals.
- * @param ...ids {number[]} A set of accurate or relative intervals to cancel.
+ * Clears a set of relative or absolute intervals.
+ * @param ids A set of accurate or relative intervals to cancel.
  */
 export function clearCustomInterval(...ids) {
     for (const id of ids) {
