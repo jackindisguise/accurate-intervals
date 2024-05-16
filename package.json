@@ -2,7 +2,7 @@
   "name": "accurate-intervals",
   "version": "1.1.4",
   "description": "Provides more accurate interval functionality.",
-  "typings": "es6/build/index.d.ts",
+  "typings": "es6/build/index.d.mts",
   "exports": {
     ".": [
       {
@@ -15,10 +15,9 @@
   },
   "scripts": {
     "clean": "node clean.cjs",
-    "make": "npm run clean && npm run prettier && npm run lint && npm run compile && npm test && npm run docs",
+    "make": "npm run clean && npm run prettier && npm run compile && npm test && npm run docs",
     "compile": "npx tsc -p es6 && npx tsc -p cjs && npm run fix",
     "prettier": "npx prettier **/*.ts **/*.cjs --write",
-    "lint": "npx eslint .",
     "fix": "cd es6 && node fix.cjs && cd ../cjs && node fix.cjs",
     "test": "npx mocha es6/build && npx mocha cjs/build",
     "docs": "npx typedoc index.ts"
@@ -36,7 +35,7 @@
     "mocha": "^10.2.0",
     "prettier": "^3.0.3",
     "typedoc": "^0.25.2",
-    "typescript": "^5.2.2"
+    "typescript": "^5.4.5"
   },
   "author": "jackindisguise",
   "license": "ISC",
